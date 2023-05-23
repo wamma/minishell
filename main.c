@@ -6,13 +6,13 @@
 /*   By: hyungjup <hyungjup@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:54:11 by hyungjup          #+#    #+#             */
-/*   Updated: 2023/05/12 21:28:46 by hyungjup         ###   ########.fr       */
+/*   Updated: 2023/05/19 19:53:50 by hyungjup         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	sigint_handler(int signum)
+void	ft_readline(int signum)
 {
 	char	*str;
 
