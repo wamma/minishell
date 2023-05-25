@@ -6,13 +6,13 @@
 /*   By: seocha <seocha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 16:57:25 by seocha            #+#    #+#             */
-/*   Updated: 2023/05/25 17:16:40 by seocha           ###   ########.fr       */
+/*   Updated: 2023/05/25 17:36:44 by seocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_token	*create_node(int type, char *original)
+t_token	*create_node(int type, char *original, t_token *node)
 {
 	t_token	*new_node;
 
@@ -22,5 +22,6 @@ t_token	*create_node(int type, char *original)
 	new_node->next = NULL;
 	new_node->type = TOKEN_ARGV;
 	new_node->original = original;
+	node->next = new_node;
 	return (new_node);
 }

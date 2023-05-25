@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   parse_quote.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seocha <seocha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 09:31:17 by seocha            #+#    #+#             */
-/*   Updated: 2023/05/25 17:23:28 by seocha           ###   ########.fr       */
+/*   Updated: 2023/05/25 17:46:51 by seocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	is_quote(char c)
 	return (0);
 }
 
-static char	*ft_arr(const char *str)
+static char	arr_argv(const char *str)
 {
 	int		cnt;
 	char	*word;
@@ -38,7 +38,26 @@ static char	*ft_arr(const char *str)
 	return (word);
 }
 
-static void	push(char const **s)
+static char	arr_chunk(const char *str)
+{
+	int		cnt;
+	char	*word;
+
+	cnt = 0;
+	if (str[cnt] && str[cnt] == '\'')
+		while (str[cnt] && str[cnt + 1] != '\'')
+			cnt++;
+	else if (str[cnt] && str[cnt] == '\"')
+		while (str[cnt] && str[cnt + 1] != '\"')
+			cnt++; 
+	word = (char *)malloc(sizeof(char) * (cnt + 1));
+	if (!word)
+		return (NULL);
+	ft_strlcpy(word, str, cnt + 1);
+	return (word);
+}
+
+static void	push_quote(char const **s)
 {
 	if (*(s[0]) == '\'')
 		while (*(s[0]) && (*(s[0]) + 1) != '\'')
@@ -50,18 +69,21 @@ static void	push(char const **s)
 
 void	parse_quote(t_token *token, char const *s)
 {
+	int		i;
 	t_token	*node;
 
+	i = 0;
 	if (!s)
 		return (NULL);
-	while (*s)
+	while (s[i])
 	{
-		while (*s && is_quote(*s))
-			s++;
-		if (*s == '\0')
+		while (s[i] && is_quote(s[i]))
+			i++;
+		if (s[i] == '\0')
 			break ;
-		node = new_node(TOKEN_ARGV, ft_arr(s));
-		token->next = node;
-		push(&s);
+		node = new_node(TOKEN_CHUNK, ft_arr(s), token);
+		node = new_node(TOKEN_ARGV, arr_argv(s), token);
+		token = node;
+		push_quote(&s);
 	}
 }
