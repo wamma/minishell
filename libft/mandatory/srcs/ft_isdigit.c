@@ -1,35 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyungjup <hyungjup@student.42.fr>          +#+  +:+       +#+        */
+/*   By: seocha <seocha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/09 20:54:11 by hyungjup          #+#    #+#             */
-/*   Updated: 2023/05/19 19:53:50 by hyungjup         ###   ########.fr       */
+/*   Created: 2022/11/09 08:44:51 by seocha            #+#    #+#             */
+/*   Updated: 2023/02/23 17:05:19 by seocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../includes/libft.h"
 
-void	ft_readline(int signum)
+int	ft_isdigit(int c)
 {
-	char	*str;
-
-	while (1)
-	{
-		str = readline("prompt : ");
-		if (str)
-			printf("%s\n", str);
-		else
-			break ;
-		add_history(str);
-		free(str);
-	}
+	if (c >= '0' && c <= '9')
+		return (c);
 	return (0);
-}
-
-int	main(int argc, char *argv[], char *envp[])
-{
-	
 }

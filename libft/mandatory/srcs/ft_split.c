@@ -6,11 +6,11 @@
 /*   By: seocha <seocha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 09:31:17 by seocha            #+#    #+#             */
-/*   Updated: 2023/02/23 16:47:08 by seocha           ###   ########.fr       */
+/*   Updated: 2023/02/23 17:05:10 by seocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex.h"
+#include "../../includes/libft.h"
 
 static int	ft_cnt_split(const char *str, char c)
 {
@@ -21,17 +21,11 @@ static int	ft_cnt_split(const char *str, char c)
 	cnt = 0;
 	while (str[i])
 	{
-		cnt++;
 		while (str[i] && str[i] == c)
 			i++;
 		if (str[i] && str[i] != c)
 		{
-			if (str[i] == '\'')
-				while (str[i] && str[i + 1] != '\'')
-					i++;
-			else if (str[i] == '\"')
-				while (str[i] && str[i + 1] != '\"')
-					i++;
+			cnt ++;
 			while (str[i] && str[i] != c)
 				i++;
 		}
@@ -45,13 +39,7 @@ static char	*ft_arr(const char *str, char c)
 	char	*word;
 
 	cnt = 0;
-	if (str[cnt] && str[cnt] == '\'')
-		while (str[cnt] && str[cnt + 1] != '\'')
-			cnt++;
-	else if (str[cnt] && str[cnt] == '\"')
-		while (str[cnt] && str[cnt + 1] != '\"')
-			cnt++;
-	while (str[cnt] && str[cnt] != c)
+	while (str[cnt] && !(str[cnt] == c))
 		cnt++;
 	word = (char *)malloc(sizeof(char) * (cnt + 1));
 	if (!word)
@@ -60,7 +48,7 @@ static char	*ft_arr(const char *str, char c)
 	return (word);
 }
 
-static void	free_split(char **arr, int idx)
+void	free_split(char **arr, int idx)
 {
 	int	i;
 
@@ -71,18 +59,6 @@ static void	free_split(char **arr, int idx)
 		i++;
 	}
 	free(arr);
-}
-
-static void	ft_split2(char const **s, char c)
-{
-	if (*(s[0]) == '\'')
-		while (*(s[0]) && (*(s[0]) + 1) != '\'')
-			s[0]++;
-	else if (*(s[0]) == '\"')
-		while (*(s[0]) && (*(s[0]) + 1) != '\"')
-			s[0]++;
-	while (*(s[0]) && *(s[0]) != c)
-		s[0]++;
 }
 
 char	**ft_split(char const *s, char c)
@@ -107,7 +83,8 @@ char	**ft_split(char const *s, char c)
 			return (NULL);
 		}
 		i++;
-		ft_split2(&s, c);
+		while (*s && *s != c)
+			s++;
 	}
 	arr[i] = 0;
 	return (arr);
