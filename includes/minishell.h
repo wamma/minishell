@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seocha <seocha@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ricecha <ricecha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:54:24 by hyungjup          #+#    #+#             */
-/*   Updated: 2023/05/25 17:29:56 by seocha           ###   ########.fr       */
+/*   Updated: 2023/06/02 22:20:59 by ricecha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# define TOKEN_CHUNK 0
+# define TOKEN_ORIGIN 0
 # define TOKEN_ARGV 1
 # define TOKEN_SPACE 2
 # define TOKEN_PIPELINE 3

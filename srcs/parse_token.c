@@ -3,21 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   parse_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seocha <seocha@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ricecha <ricecha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/25 15:25:35 by seocha            #+#    #+#             */
-/*   Updated: 2023/05/25 17:40:22 by seocha           ###   ########.fr       */
+/*   Created: 2023/06/02 20:57:46 by ricecha           #+#    #+#             */
+/*   Updated: 2023/06/02 22:14:48 by ricecha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
-
-void	parse_token(t_token *token, char *s)
+t_token   *parse_main(char *str)
 {
-	//quote 분리
-	parse_quote(token, s);
-	//토큰 안의 $ 환경변수 해석
-	
-	//chunk로부터 공백을 찾아 space_token 분리
-	//파이프라인을 기준으로 pipeline_token 분리
+    # token 순서대로 쪼개기
+    t_token *token;
+
+    if (token == NULL)
+        return (NULL);
+    token->type = TOKEN_ORIGIN;
+    token->original = str;
+    parse_quote(token);
+    parse_env(token);
+    parse_space(token);
+    parse_pipeline(token);
+    parse_redirection(token);
+    parse_delete_empty_chunk(token);
+    parse_chunk_to_argv(token);
+    parse_merge_argv(token);
+    parse_delete_space(token);
 }
