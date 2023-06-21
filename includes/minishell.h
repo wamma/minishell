@@ -3,24 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyungjup <hyungjup@student.42.fr>          +#+  +:+       +#+        */
+/*   By: seocha <seocha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:54:24 by hyungjup          #+#    #+#             */
-/*   Updated: 2023/06/19 21:17:22 by hyungjup         ###   ########.fr       */
+/*   Updated: 2023/06/21 19:23:04 by seocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# define TOKEN_ORIGIN 0
-# define TOKEN_ARGV 1
-# define TOKEN_SPACE 2
-# define TOKEN_PIPELINE 3
-# define TOKEN_R 4
-# define TOKEN_RR 5
-# define TOKEN_L 6
-# define TOKEN_LL 7
+// 원래 토큰
+# define TOKEN_ORIGIN 11
+// 기본 토큰
+# define TOKEN_ARGV 22
+// 공백 토큰
+# define TOKEN_SPACE 33
+// 파이프라인 토큰
+# define TOKEN_PIPELINE 44
+// 리다이렉션 토큰 >
+# define TOKEN_R 55
+// 리다이렉션 토큰 >>
+# define TOKEN_RR 66
+// 리다이렉션 토큰 <
+# define TOKEN_L 77
+// 리다이렉션 토큰 <<
+# define TOKEN_LL 88
 
 # include <stdio.h>
 # include <unistd.h>
@@ -32,10 +40,10 @@
 
 typedef struct s_token
 {
-	int				type;
-	char			*original; // quote 짝 체크
-	char			*str; // quote를 제외한 문자열, 환경변수를 해석하기 전 문자열. $ 유무 체크
-	struct s_token	*next;
+	int				type; // 토큰의 타입
+	char			*origin; // 원래 토큰
+	char			*str; // 토큰의 타입에 맞는 문자열
+	struct s_token	*next; // 다음 토큰을 가리키는 포인터
 }	t_token;
 
 typedef struct s_list
