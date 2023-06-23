@@ -6,90 +6,106 @@
 /*   By: seocha <seocha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 21:14:56 by seocha            #+#    #+#             */
-/*   Updated: 2023/06/22 20:14:56 by seocha           ###   ########.fr       */
+/*   Updated: 2023/06/23 20:02:34 by seocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*env_process(char *env_str)
-{
-	char	*env_value;
-
-	env_value = getenv(env_str);
-	if (env_value == NULL)
-		return (ft_strdup("")); // 메모리 free를 위해
-	else if (env_value != NULL)
-		return (ft_strdup(env_value));
-	return (NULL);
-}
-
-int	is_space(char c)
-{
-	if ((c >= 9 && c <= 13) || c == 32)
-		return (1);
-	return (0);
-}
-
-// "" 묶인 애들이 들어옴, 하지만 ""이거는 떼고
-char	*parse_env_double_quote(char *str)
+// 환경변수 안에 space 가 없는 애들 ex)abc=hello
+void	parse_env_no_space(t_token *token, char *str)
 {
 	int		i;
-	int		j;
-	char	*result;
-	char	*env_str;
-	char	*no_env_str;
+	char	**sep;
+	t_token	*new_token;
 
 	i = 0;
-	if (str == NULL)
-		return (NULL);
 	while (str[i] != '\0')
 	{
-		if (str[i] == '$')
+		// 환경 변수 이름이 잘못되었을 때
+		// 환경 변수 해석 없이 들어온 문자열 그대로의 값을 ORIGIN으로 넘김
+		if (!is_env(str[i]))
 		{
-			j = i;
-			no_env_str = ft_substr(str, j - i, i - j);
-			while (!is_space(str[i + 1]) && (str[i + 1] != '\0'))
-				i++;
-			env_str = ft_substr(str, j + 1, i - j);
-			result = ft_strjoin(no_env_str, env_process(env_str));
-			// env_process: 환경변수 있는 애들 환경변수 실제 값 갖고오기, quote 날리기(single, double 둘 다)
-			free(env_str);
-			free(no_env_str);
+			create_free_token(token, str, TOKEN_ORIGIN);
+			return ;
 		}
 		i++;
 	}
-	return (result);
+	sep = ft_split_space(env_process(str));
+	while (sep[i] != NULL)
+	{
+		create_free_token(token, sep[i], TOKEN_ARGV);
+		if (i != ft_strlen2(sep) - 1)
+			create_free_token(token, "", TOKEN_SPACE);
+		i++;
+	}
+}
+
+// 환경변수 안에 space 가 있는 애들 ex)abc="ls -l"
+void	parse_env_space(t_token *token, char *before_space, char *after_space)
+{
+	int		i;
+	char	**sep;
+
+	i = 0;
+	while (before_space[i] != '\0')
+	{
+		// $? 들어오는 애들 처리
+		if (before_space[0] != '?')
+		{
+			// env_question_process : $? 해석한 값 갖고오기
+			create_free_token(token, env_question_process(str), TOKEN_ARGV);
+			return ;
+		}
+		// 환경 변수 이름이 잘못되었을 때
+		// 환경 변수 해석 없이 들어온 문자열 그대로의 값을 ORIGIN으로 넘김
+		if (!is_env(before_space[i]) || ft_isalnum(before_space[0]))
+		{
+			create_free_token(token, before_space, TOKEN_ORIGIN);
+			return ;
+		}
+		i++;
+	}
+	i = 0;
+	sep = ft_split_space(env_process(before_space));
+	while (sep[i] != NULL)
+	{
+		create_free_token(token, sep[i], TOKEN_ARGV);
+		if (i != ft_strlen2(sep) - 1)
+			create_free_token(token, "", TOKEN_SPACE);
+		i++;
+	}
+	// after_space 문자열은 그냥 바로 TOKEN_ORIGIN으로 만들어서 넣어버리기
+	create_free_token(token, after_space, TOKEN_ORIGIN);
 }
 
 // quote 없이 들어오는 환경변수 처리: argv + space + argv
-void	parse_no_quote(t_token *token, char *str)
+void	parse_env_no_quote(t_token *token, char *str)
 {
 	int		i;
 	int		j;
-	char	*result;
-	char	*env_str;
-	char	*no_env_str;
+	char	**sep;
 
 	i = 0;
-	if (str == NULL)
+	if (str == NULL || token == NULL)
 		return (NULL);
-	while (str[i] != '\0')
+	sep = ft_split(str, '$');
+	while (sep[i] != NULL)
 	{
-		if (str[i] == '$')
+		if (i == 0)
+			token->origin = sep[0];
+		else
 		{
-			j = i;
-			no_env_str = ft_substr(str, j - i, i - j);
-			while (!is_space(str[i + 1]) && (str[i + 1] != '\0'))
-				i++;
-			env_str = ft_substr(str, j + 1, i - j);
-			parse_env_spcae(token, no_env_str, env_str);
-			free(env_str);
-			free(no_env_str);
+			j = 0;
+			while (!is_space(sep[i][j]))
+				j++;
+			if (sep[i][j] == '\0')
+				parse_env_no_space(token, sep[i]);
+			else
+				parse_env_space(token, ft_substr(sep[i], 0, j), \
+				ft_substr(sep[i], j, ft_strlen(sep[i]) - j - 2));
 		}
-		i++;
 	}
-	return (result);
 }
 
 // quote 없는 애들 환경변수 처리

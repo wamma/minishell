@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_export.c                                        :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seocha <seocha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/25 16:56:02 by hyungjup          #+#    #+#             */
-/*   Updated: 2023/06/23 18:12:57 by seocha           ###   ########.fr       */
+/*   Created: 2023/06/23 19:56:43 by seocha            #+#    #+#             */
+/*   Updated: 2023/06/23 19:57:01 by seocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
-#include <string.h>
+#include "minishell.h"
 
-static int	print_non_argv(t_list *list)
+void	*free_result(char **result)
 {
-	t_list	*cur;
+	int	i;
 
-	cur = list->head->next;
-	while ()
-}
-
-int	ft_export(char **argv, t_list *list)
-{
-	if (argv[1] == NULL)
-		return (print_non_argv(list));
+	i = 0;
+	if (result == NULL)
+		return (NULL);
+	while (i < 3 && result[i] != NULL)
+	{
+		free(result[i]);
+		i++;
+	}
+	free(result);
+	return (NULL);
 }

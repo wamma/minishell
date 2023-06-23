@@ -6,38 +6,41 @@
 /*   By: seocha <seocha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 09:31:17 by seocha            #+#    #+#             */
-/*   Updated: 2023/06/21 21:55:42 by seocha           ###   ########.fr       */
+/*   Updated: 2023/06/23 19:57:03 by seocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-/*
-TOKEN_ORIGIN ex) echo "ls -l" 'dd' cs "laaa"
-= TOKEN_ORIGIN TOKEN_ARGV "TOKEN_ORIGIN"
-= echo         ls -l      'dd' cd "laaaa"
-
-"TOKEN_ORIGIN"
-= TOKEN_ORIGIN TOKEN_ARGV TOKEN_ORIGIN
-= NULL        dd         cd "laaaa"
-
-NULL laaaa NULL
-*/
-
-void	*free_result(char **result)
+// "" 묶인 애들이 들어옴, 하지만 ""이거는 떼고
+char	*parse_env_double_quote(char *str)
 {
-	int	i;
+	int		i;
+	int		j;
+	char	*result;
+	char	*env_str;
+	char	*no_env_str;
 
 	i = 0;
-	if (result == NULL)
+	if (str == NULL)
 		return (NULL);
-	while (i < 3 && result[i] != NULL)
+	while (str[i] != '\0')
 	{
-		free(result[i]);
+		if (str[i] == '$')
+		{
+			j = i;
+			no_env_str = ft_substr(str, j - i, i - j);
+			while (!is_space(str[i + 1]) && (str[i + 1] != '\0'))
+				i++;
+			env_str = ft_substr(str, j + 1, i - j);
+			result = ft_strjoin(no_env_str, env_process(env_str));
+			// env_process: 환경변수 있는 애들 환경변수 실제 값 갖고오기)
+			free(env_str);
+			free(no_env_str);
+		}
 		i++;
 	}
-	free(result);
-	return (NULL);
+	return (result);
 }
 
 char	**separate_single_double(char *origin, int i, int j, char c)
@@ -105,10 +108,10 @@ void	parse_quote(t_token *token)
 			sep = separate_quote(token->origin);
 			if (sep != NULL)
 			{
-				new_token = create_token(token, sep[1], 1);
+				new_token = create_token(token, sep[1], TOKEN_ARGV);
 				add_token(&token, new_token);
 				free(new_token);
-				new_token = create_token(token, sep[2], 2);
+				new_token = create_token(token, sep[2], TOKEN_ORIGIN);
 				add_token(&token, new_token);
 				free(new_token);
 				token->origin = sep[0];

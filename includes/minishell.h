@@ -6,7 +6,7 @@
 /*   By: seocha <seocha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:54:24 by hyungjup          #+#    #+#             */
-/*   Updated: 2023/06/21 19:23:04 by seocha           ###   ########.fr       */
+/*   Updated: 2023/06/23 17:30:46 by seocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,18 @@ typedef struct s_token
 	struct s_token	*next; // 다음 토큰을 가리키는 포인터
 }	t_token;
 
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+	struct s_env	*prev;
+}	t_env;
+
 typedef struct s_list
 {
-	void			*content;
-	struct s_list	*next;
+	t_env	*head;
+	t_env	*tail;
 }	t_list;
 
 typedef struct s_cmd

@@ -6,7 +6,7 @@
 /*   By: seocha <seocha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/02 20:57:46 by ricecha           #+#    #+#             */
-/*   Updated: 2023/06/21 21:56:26 by seocha           ###   ########.fr       */
+/*   Updated: 2023/06/23 15:11:44 by seocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_token	*parse_main(char *str)
 	parse_space(token); // 공백 분리
 	parse_pipeline(token); // 파이프라인 분리
 	parse_redirection(token); // 리다이렉션 분리
-	parse_delete_empty_chunkc(token); // 비어있는 토큰 분리
+	parse_delete_empty_chunk(token); // 비어있는 토큰 분리
 	parse_chunk_to_argv(token); // 나머지 토큰을 argv로 치환
 	parse_merge_argv(token); // 연속한 argv 토큰들 병합
 	parse_delete_space(token); // 공백 삭제

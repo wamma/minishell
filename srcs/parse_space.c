@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_export.c                                        :+:      :+:    :+:   */
+/*   parse_space.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seocha <seocha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/25 16:56:02 by hyungjup          #+#    #+#             */
-/*   Updated: 2023/06/23 18:12:57 by seocha           ###   ########.fr       */
+/*   Created: 2023/06/23 19:43:43 by seocha            #+#    #+#             */
+/*   Updated: 2023/06/23 20:00:46 by seocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
-#include <string.h>
+#include "minishell.h"
 
-static int	print_non_argv(t_list *list)
+void	parse_space(t_token *token)
 {
-	t_list	*cur;
+	t_token	*copy;
 
-	cur = list->head->next;
-	while ()
-}
-
-int	ft_export(char **argv, t_list *list)
-{
-	if (argv[1] == NULL)
-		return (print_non_argv(list));
+	while (token != NULL)
+	{
+		copy = token->next;
+		if (copy->type == TOKEN_ORIGIN)
+			parse_space_split(token, copy->origin);
+		token = copy;
+	}
 }

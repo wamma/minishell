@@ -1,28 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_export.c                                        :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seocha <seocha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/25 16:56:02 by hyungjup          #+#    #+#             */
-/*   Updated: 2023/06/23 18:12:57 by seocha           ###   ########.fr       */
+/*   Created: 2023/06/23 16:50:50 by seocha            #+#    #+#             */
+/*   Updated: 2023/06/23 17:31:07 by seocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
-#include <string.h>
+#include "minishell.h"
 
-static int	print_non_argv(t_list *list)
+int	is_space(char c)
 {
-	t_list	*cur;
-
-	cur = list->head->next;
-	while ()
+	if ((c >= 9 && c <= 13) || c == 32)
+		return (1);
+	return (0);
 }
 
-int	ft_export(char **argv, t_list *list)
+int	is_env(char c)
 {
-	if (argv[1] == NULL)
-		return (print_non_argv(list));
+	if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || \
+	(c >= 'a' && c <= 'z') || c == '_')
+		return (1);
+	return (0);
+}
+
+size_t	ft_strlen2(const char **s)
+{
+	size_t	cnt;
+
+	cnt = 0;
+	while (*s != NULL)
+	{
+		cnt++;
+		s++;
+	}
+	return (cnt);
 }
