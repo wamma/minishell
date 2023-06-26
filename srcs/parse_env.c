@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seocha <seocha@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hyungjup <hyungjup@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 21:14:56 by seocha            #+#    #+#             */
-/*   Updated: 2023/06/23 20:02:34 by seocha           ###   ########.fr       */
+/*   Updated: 2023/06/26 15:23:36 by hyungjup         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	parse_env_space(t_token *token, char *before_space, char *after_space)
 		if (before_space[0] != '?')
 		{
 			// env_question_process : $? 해석한 값 갖고오기
-			create_free_token(token, env_question_process(str), TOKEN_ARGV);
+			create_free_token(token, env_question_process(token), TOKEN_ARGV);
 			return ;
 		}
 		// 환경 변수 이름이 잘못되었을 때
