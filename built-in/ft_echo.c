@@ -6,14 +6,13 @@
 /*   By: hyungjup <hyungjup@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 15:25:04 by hyungjup          #+#    #+#             */
-/*   Updated: 2023/05/25 16:02:19 by hyungjup         ###   ########.fr       */
+/*   Updated: 2023/06/27 19:54:05 by hyungjup         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
-#include <string.h>
+#include "../includes/minishell.h"
 
-void	ft_echo(char **argv)
+void	ft_echo(char **argv) // echo "'"hi"'" -> 'hi' quote 처리 완료
 {
 	int	i;
 	int	newline;
@@ -32,23 +31,4 @@ void	ft_echo(char **argv)
 	}
 	if (newline)
 		printf("\n");
-}
-
-int	main(int argc, char **argv)
-{
-	if (argc >= 2)
-	{
-		if (strcmp(argv[1], "echo") == 0)
-		{
-			if (argc > 2)
-				ft_echo(argv + 1);
-			else
-				printf("\n");
-		}
-		else
-			printf("command not found");
-	}
-	else
-		printf("\n");
-	return (0);
 }

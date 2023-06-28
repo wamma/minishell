@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env.c                                           :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyungjup <hyungjup@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/02 18:50:13 by hyungjup          #+#    #+#             */
-/*   Updated: 2023/06/27 16:45:29 by hyungjup         ###   ########.fr       */
+/*   Created: 2023/06/28 15:38:48 by hyungjup          #+#    #+#             */
+/*   Updated: 2023/06/28 15:39:17 by hyungjup         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/libft.h"
 
-int	ft_env(t_list *list)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	t_env	*cur;
+	int	i;
 
-	cur = list->head->next;
-	while (cur != list->tail)
-	{
-		printf("%s=%s\n", cur->key, cur->value);
-		cur = cur->next;
-	}
-	return (0);
+	i = 0;
+	while (s1[i] && s2[i] && s1[i] == s2[i])
+		i++;
+	return (s1[i] - s2[i]);
 }

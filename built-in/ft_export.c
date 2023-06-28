@@ -6,18 +6,51 @@
 /*   By: hyungjup <hyungjup@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 16:56:02 by hyungjup          #+#    #+#             */
-/*   Updated: 2023/06/26 23:18:20 by hyungjup         ###   ########.fr       */
+/*   Updated: 2023/06/28 16:01:38 by hyungjup         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include <string.h>
 
-static int	print_no_argv(t_list *list)
+static int	compare_keys(t_env *a, t_env *b)
 {
-	t_list	*cur;
+	return (ft_strcmp(a->key, b->key));
+}
+
+static t_env	*sorted_list(t_list *list) // 오름차순 정렬
+{
+	t_env	*cur;
+	t_env	*sorted;
+	t_env	*temp;
 
 	cur = list->head->next;
+	sorted = NULL;
+	while (cur != list->tail)
+	{
+		temp = sorted;
+		if (!sorted || compare_keys(cur, sorted) < 0)
+		{
+			cur->sorted_next = sorted;
+			sorted = cur;
+		}
+		else
+		{
+			while (temp->sorted_next && compare_keys(cur, temp->sorted_next) > 0)
+				temp = temp->sorted_next;
+			cur->sorted_next = temp->sorted_next;
+			temp->sorted_next = cur;
+		}
+		cur = cur->next;
+	}
+	return (sorted);
+}
+
+static int	print_no_argv(t_list *list)
+{
+	t_env	*cur;
+
+	cur = sorted_list(list);
 	while (cur != list->tail)
 	{
 		printf("declare -x %s=%s\n", cur->key, cur->value);
@@ -46,15 +79,15 @@ static int	check_valid_key(char *str) // str -> a="ls -l"
 	return (0);
 }
 
-t_list	*find_key_in_list(t_list *list, char *key)
+int	find_key_in_list(t_list *list, char *key)
 {
-	t_list	*cur;
+	t_env	*cur;
 
 	cur = list->head->next;
 	while (cur != list->tail)
 	{
 		if (ft_strcmp(cur->key, key) == 0)
-			return (cur);
+			return (1);
 		cur = cur->next;
 	}
 	return (0);
@@ -78,7 +111,9 @@ int	ft_export(char **argv, t_list *list) // key만 있어도 됨, key=value도 �
 	key = check_valid_key(argv[1]); // export a="ls -l"
 	if (key == 1)
 	{
-		printf("bash: export: `%s': not a valid identifier\n", argv[1]);
+		ft_putstr_fd("minishell: export: `", 2);
+		ft_putstr_fd(argv[1], 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
 		return (1);
 	}
 	else if (key == 0)
@@ -87,10 +122,10 @@ int	ft_export(char **argv, t_list *list) // key만 있어도 됨, key=value도 �
 		while (argv[i] != NULL)
 		{
 			value = ft_split(argv[i], '='); // value[0] = a, value[1] = "ls -l"
-			if (find_key_in_list(list, value[0]) != 0) // 기존 env list에 key가 있으면
-				update_list(); // 기존 env list에 있는 값에 value[1]을 덮어씌움
+			if (find_key_in_list(list, value[0]) == 1) // 기존 env list에 key가 있으면
+				update_list(list, value[0], value[1]); // 기존 env list에 있는 값에 value[1]을 덮어씌움
 			else
-				ft_lstadd_back(기존 env list, ft_lstnew(value[0], value[1]));
+				ft_lstadd_back(기존 env list, ft_lstnew(value[0], value[1])); // 기존 env list -> 전역변수 구조체
 			free_value(value);
 			i++;
 		}

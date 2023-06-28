@@ -6,22 +6,17 @@
 /*   By: hyungjup <hyungjup@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/02 18:22:38 by hyungjup          #+#    #+#             */
-/*   Updated: 2023/06/02 18:39:02 by hyungjup         ###   ########.fr       */
+/*   Updated: 2023/06/28 16:13:51 by hyungjup         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../includes/minishell.h"
 
-void	ft_pwd(void)
+int	ft_pwd(void)
 {
-	char	*pwd;
-	int		ret;
+	char	pwd[9999];
 
-	ret = 0;
-	pwd = getcwd(0, MAX_SIZE);
-	if (pwd != NULL)
-	{
+	if (getcwd(pwd, 9999) != NULL)
 		printf("%s\n", pwd);
-		free(pwd);
-	}
+	return (0);
 }

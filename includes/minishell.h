@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seocha <seocha@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hyungjup <hyungjup@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:54:24 by hyungjup          #+#    #+#             */
-/*   Updated: 2023/06/23 17:30:46 by seocha           ###   ########.fr       */
+/*   Updated: 2023/06/28 15:30:42 by hyungjup         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_env
 	char			*value;
 	struct s_env	*next;
 	struct s_env	*prev;
+	struct s_env	*sorted_next;
 }	t_env;
 
 typedef struct s_list
@@ -73,5 +74,14 @@ typedef struct s_data
 	t_cmd	*cmd;
 	char	*buff;
 }	t_data;
+
+typedef struct s_glob // 전역변수 구조체
+{
+	t_list	*list;
+	t_env	*head;
+	int		exit_code;
+}	t_glob;
+
+t_glob	g_glob;
 
 #endif
