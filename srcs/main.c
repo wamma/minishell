@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ricecha <ricecha@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hyungjup <hyungjup@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:54:11 by hyungjup          #+#    #+#             */
-/*   Updated: 2023/06/02 22:09:45 by ricecha          ###   ########.fr       */
+/*   Updated: 2023/07/05 23:17:55 by hyungjup         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,10 @@ void	ft_readline(int signum)
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	
+	t_cmd_list	*cmd_lst;
+	char		*str;
+
+	(void)argc;
+	(void)argv;
+	print_fist();
 }

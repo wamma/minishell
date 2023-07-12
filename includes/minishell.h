@@ -6,7 +6,7 @@
 /*   By: hyungjup <hyungjup@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:54:24 by hyungjup          #+#    #+#             */
-/*   Updated: 2023/06/28 15:30:42 by hyungjup         ###   ########.fr       */
+/*   Updated: 2023/07/05 23:10:24 by hyungjup         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,13 @@ typedef struct s_cmd
 	char	**cmdline;
 	char	quote;
 }	t_cmd;
+
+typedef sturct s_cmd_list
+{
+	struct s_cmd	*cmd_list;
+	struct s_cmd	*cmd_list_tail;
+	int				status;
+}	t_cmd_list;
 
 typedef struct s_data
 {
